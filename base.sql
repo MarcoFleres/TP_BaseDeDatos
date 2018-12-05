@@ -1,13 +1,13 @@
--- MySQL dump 10.13  Distrib 8.0.11, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.24, for Linux (x86_64)
 --
--- Host: localhost    Database: restaurante2
+-- Host: localhost    Database: restaurante
 -- ------------------------------------------------------
--- Server version	8.0.11
+-- Server version	5.7.24-0ubuntu0.18.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
- SET NAMES utf8 ;
+/*!40101 SET NAMES utf8 */;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
@@ -16,7 +16,7 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Temporary view structure for view `carta_general`
+-- Temporary table structure for view `carta_general`
 --
 
 DROP TABLE IF EXISTS `carta_general`;
@@ -32,7 +32,7 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
--- Temporary view structure for view `carta_vino`
+-- Temporary table structure for view `carta_vino`
 --
 
 DROP TABLE IF EXISTS `carta_vino`;
@@ -54,7 +54,7 @@ SET character_set_client = @saved_cs_client;
 
 DROP TABLE IF EXISTS `categoria`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `categoria` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
@@ -62,7 +62,7 @@ CREATE TABLE `categoria` (
   PRIMARY KEY (`id`),
   KEY `fk_categoria_padre` (`padre`),
   CONSTRAINT `fk_categoria_padre` FOREIGN KEY (`padre`) REFERENCES `categoria` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -81,10 +81,10 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cobrable`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cobrable` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `nombre` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `nombre` varchar(255) NOT NULL,
   `tamaño` varchar(45) NOT NULL,
   `precio` decimal(20,2) NOT NULL DEFAULT '1.00',
   `tipo` enum('VINO','ITEM_CARTA','MENU_PROMOCIONAL','') NOT NULL,
@@ -108,19 +108,19 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `comanda`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `comanda` (
-  `fecha` date NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `mesa` int(11) NOT NULL,
+  `fecha_inicio` datetime NOT NULL,
+  `fecha_fin` datetime DEFAULT NULL,
   `cantidad_comensales` int(11) NOT NULL,
-  `fecha_inicio` date NOT NULL,
-  `fecha_fin` date NOT NULL,
   `estado` enum('abierta','cerrada') DEFAULT NULL,
-  `nro_mozo` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`fecha`,`mesa`),
+  `nro_mozo` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`) USING BTREE,
   KEY `fk_comanda_mozo` (`nro_mozo`),
   CONSTRAINT `fk_comanda_mozo` FOREIGN KEY (`nro_mozo`) REFERENCES `mozo` (`nro_mozo`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,8 +129,23 @@ CREATE TABLE `comanda` (
 
 LOCK TABLES `comanda` WRITE;
 /*!40000 ALTER TABLE `comanda` DISABLE KEYS */;
+INSERT INTO `comanda` VALUES (1,8,'2018-12-03 11:25:26','2018-12-03 12:15:26',2,'cerrada',1),(2,2,'2018-12-04 00:00:00',NULL,4,'abierta',2);
 /*!40000 ALTER TABLE `comanda` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `comandas_abiertas`
+--
+
+DROP TABLE IF EXISTS `comandas_abiertas`;
+/*!50001 DROP VIEW IF EXISTS `comandas_abiertas`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `comandas_abiertas` AS SELECT 
+ 1 AS `id`,
+ 1 AS `mesa`,
+ 1 AS `nro_mozo`*/;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `cupon`
@@ -138,7 +153,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `cupon`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `cupon` (
   `nro_cupon` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `numero_factura` int(10) unsigned NOT NULL,
@@ -150,7 +165,7 @@ CREATE TABLE `cupon` (
   PRIMARY KEY (`nro_cupon`),
   KEY `fk_factura_cupon` (`numero_factura`),
   CONSTRAINT `fk_factura_cupon` FOREIGN KEY (`numero_factura`) REFERENCES `factura` (`nro_factura`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,7 +183,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `direccion_mozo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `direccion_mozo` (
   `calle` varchar(45) NOT NULL,
   `localidad` varchar(45) NOT NULL,
@@ -177,7 +192,7 @@ CREATE TABLE `direccion_mozo` (
   PRIMARY KEY (`calle`,`localidad`,`numeracion`,`nro_mozo`),
   KEY `fk_mozo_direccion` (`nro_mozo`),
   CONSTRAINT `fk_direccion_mozo` FOREIGN KEY (`nro_mozo`) REFERENCES `mozo` (`nro_mozo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -195,7 +210,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `factura`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `factura` (
   `nro_factura` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `fecha_comanda` date NOT NULL,
@@ -203,9 +218,8 @@ CREATE TABLE `factura` (
   `tipo` varchar(45) NOT NULL,
   `importe` decimal(20,2) NOT NULL,
   PRIMARY KEY (`nro_factura`),
-  KEY `fk_factura_comanda` (`fecha_comanda`,`mesa_comanda`),
-  CONSTRAINT `fk_factura_comanda` FOREIGN KEY (`fecha_comanda`, `mesa_comanda`) REFERENCES `comanda` (`fecha`, `mesa`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+  KEY `fk_factura_comanda` (`fecha_comanda`,`mesa_comanda`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -223,7 +237,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `item_carta`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `item_carta` (
   `cobrable` int(11) unsigned NOT NULL,
   `descripcion` varchar(255) DEFAULT NULL,
@@ -246,12 +260,27 @@ INSERT INTO `item_carta` VALUES (1,'(cebollas moradas, brócoli, hongos, queso b
 UNLOCK TABLES;
 
 --
+-- Temporary table structure for view `items_carta_a_elaborar`
+--
+
+DROP TABLE IF EXISTS `items_carta_a_elaborar`;
+/*!50001 DROP VIEW IF EXISTS `items_carta_a_elaborar`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `items_carta_a_elaborar` AS SELECT 
+ 1 AS `comanda`,
+ 1 AS `mesa`,
+ 1 AS `promocional`,
+ 1 AS `nombre`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `menu_promocional`
 --
 
 DROP TABLE IF EXISTS `menu_promocional`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `menu_promocional` (
   `cobrable` int(11) unsigned NOT NULL,
   `fecha_inicio` date NOT NULL,
@@ -278,7 +307,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `mozo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `mozo` (
   `nro_mozo` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL,
@@ -286,7 +315,7 @@ CREATE TABLE `mozo` (
   `cuil` int(11) NOT NULL,
   `telefono` int(10) DEFAULT NULL,
   PRIMARY KEY (`nro_mozo`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -295,6 +324,7 @@ CREATE TABLE `mozo` (
 
 LOCK TABLES `mozo` WRITE;
 /*!40000 ALTER TABLE `mozo` DISABLE KEYS */;
+INSERT INTO `mozo` VALUES (1,'Jorge',123456,201234568,NULL),(2,'Pablo',654321,206543217,NULL);
 /*!40000 ALTER TABLE `mozo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -304,7 +334,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `paso`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `paso` (
   `nombre_menu` varchar(45) NOT NULL,
   `tamaño_menu` varchar(45) NOT NULL,
@@ -330,21 +360,21 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `solicitud`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `solicitud` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `fecha_comanda` date NOT NULL,
-  `mesa_comanda` int(11) NOT NULL,
-  `nombre_cobrable` varchar(45) NOT NULL,
-  `tamaño_cobrable` varchar(45) NOT NULL,
+  `comanda` int(11) unsigned NOT NULL,
+  `cobrable` int(11) unsigned NOT NULL,
   `cantidad` int(10) unsigned NOT NULL,
   `precio` decimal(20,2) NOT NULL,
   `estado` enum('PEDIDO','COCINANDO','COCINADO','ENTREGADO','COBRADO') NOT NULL,
   `observaciones` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `fk_solicitud_cobrable` (`nombre_cobrable`,`tamaño_cobrable`),
-  KEY `fk_solicitud_comanda` (`fecha_comanda`,`mesa_comanda`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  KEY `fk_solicitud_comanda` (`comanda`),
+  KEY `fk_solicitud_cobrable` (`cobrable`),
+  CONSTRAINT `fk_solicitud_cobrable` FOREIGN KEY (`cobrable`) REFERENCES `cobrable` (`id`),
+  CONSTRAINT `fk_solicitud_comanda` FOREIGN KEY (`comanda`) REFERENCES `comanda` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -353,6 +383,7 @@ CREATE TABLE `solicitud` (
 
 LOCK TABLES `solicitud` WRITE;
 /*!40000 ALTER TABLE `solicitud` DISABLE KEYS */;
+INSERT INTO `solicitud` VALUES (1,1,6,2,15.00,'COBRADO',NULL),(2,2,9,1,15.00,'COCINADO',NULL);
 /*!40000 ALTER TABLE `solicitud` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -362,7 +393,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `vino`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
- SET character_set_client = utf8 ;
+/*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `vino` (
   `cobrable` int(11) unsigned NOT NULL,
   `color` varchar(45) NOT NULL,
@@ -418,6 +449,42 @@ UNLOCK TABLES;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `comandas_abiertas`
+--
+
+/*!50001 DROP VIEW IF EXISTS `comandas_abiertas`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `comandas_abiertas` AS select `comanda`.`id` AS `id`,`comanda`.`mesa` AS `mesa`,`comanda`.`nro_mozo` AS `nro_mozo` from `comanda` where (`comanda`.`estado` = 'abierta') */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `items_carta_a_elaborar`
+--
+
+/*!50001 DROP VIEW IF EXISTS `items_carta_a_elaborar`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `items_carta_a_elaborar` AS select `comanda`.`id` AS `comanda`,`comanda`.`mesa` AS `mesa`,if((`solicitud`.`precio` = 0),1,0) AS `promocional`,`cobrable`.`nombre` AS `nombre` from (((`comanda` join `solicitud` on((`solicitud`.`comanda` = `comanda`.`id`))) left join `cobrable` on((`solicitud`.`cobrable` = `cobrable`.`id`))) left join `item_carta` on((`item_carta`.`cobrable` = `cobrable`.`id`))) where (`cobrable`.`tipo` = 'ITEM_CARTA') */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -428,4 +495,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-12-03 16:30:06
+-- Dump completed on 2018-12-05 20:19:27
