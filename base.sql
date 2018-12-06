@@ -23,7 +23,7 @@ DROP TABLE IF EXISTS `carta_general`;
 /*!50001 DROP VIEW IF EXISTS `carta_general`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `carta_general` AS SELECT 
+/*!50001 CREATE VIEW `carta_general` AS SELECT
  1 AS `categoria`,
  1 AS `subcategoria`,
  1 AS `nombre`,
@@ -39,7 +39,7 @@ DROP TABLE IF EXISTS `carta_vino`;
 /*!50001 DROP VIEW IF EXISTS `carta_vino`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `carta_vino` AS SELECT 
+/*!50001 CREATE VIEW `carta_vino` AS SELECT
  1 AS `bodega`,
  1 AS `nombre`,
  1 AS `color`,
@@ -141,7 +141,7 @@ DROP TABLE IF EXISTS `comandas_abiertas`;
 /*!50001 DROP VIEW IF EXISTS `comandas_abiertas`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `comandas_abiertas` AS SELECT 
+/*!50001 CREATE VIEW `comandas_abiertas` AS SELECT
  1 AS `id`,
  1 AS `mesa`,
  1 AS `nro_mozo`*/;
@@ -157,7 +157,7 @@ DROP TABLE IF EXISTS `cupon`;
 CREATE TABLE `cupon` (
   `nro_cupon` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `numero_factura` int(10) unsigned NOT NULL,
-  `nro_tarjeta_pago` int(16) NOT NULL,
+  `nro_tarjeta_pago` varchar(16) NOT NULL,
   `fecha` date NOT NULL,
   `hora` time NOT NULL,
   `nro_comprobante` int(10) NOT NULL,
@@ -174,6 +174,7 @@ CREATE TABLE `cupon` (
 
 LOCK TABLES `cupon` WRITE;
 /*!40000 ALTER TABLE `cupon` DISABLE KEYS */;
+INSERT INTO `cupon` VALUES (1, 1, '4552123412341234', '2018-12-03', '11:26:26', 12345, 23456);
 /*!40000 ALTER TABLE `cupon` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -228,6 +229,7 @@ CREATE TABLE `factura` (
 
 LOCK TABLES `factura` WRITE;
 /*!40000 ALTER TABLE `factura` DISABLE KEYS */;
+INSERT INTO `factura` VALUES (1, '2018-12-03 11:25:26', 8, 'A', 1245.0);
 /*!40000 ALTER TABLE `factura` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -267,7 +269,7 @@ DROP TABLE IF EXISTS `items_carta_a_elaborar`;
 /*!50001 DROP VIEW IF EXISTS `items_carta_a_elaborar`*/;
 SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
-/*!50001 CREATE VIEW `items_carta_a_elaborar` AS SELECT 
+/*!50001 CREATE VIEW `items_carta_a_elaborar` AS SELECT
  1 AS `comanda`,
  1 AS `mesa`,
  1 AS `promocional`,
