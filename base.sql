@@ -129,7 +129,7 @@ CREATE TABLE `comanda` (
 
 LOCK TABLES `comanda` WRITE;
 /*!40000 ALTER TABLE `comanda` DISABLE KEYS */;
-INSERT INTO `comanda` VALUES (1,8,'2018-12-03 11:25:26','2018-12-03 12:15:26',2,'cerrada',1),(2,2,'2018-12-04 00:00:00',NULL,4,'abierta',2);
+INSERT INTO `comanda` VALUES (1,8,'2018-12-03 11:25:26','2018-12-03 12:15:26',2,'cerrada',1),(2,2,'2018-12-04 00:00:00',NULL,4,'abierta',2), (3,8,'2018-12-05 15:25:26','2018-12-03 12:15:26',2,'cerrada',1);
 /*!40000 ALTER TABLE `comanda` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -202,6 +202,7 @@ CREATE TABLE `direccion_mozo` (
 
 LOCK TABLES `direccion_mozo` WRITE;
 /*!40000 ALTER TABLE `direccion_mozo` DISABLE KEYS */;
+INSERT INTO `direccion_mozo` VALUES ('Av. General paz', 'Laferrere', 4561, 1), ('Suipacha', 'Capital Federal', 789, 2);
 /*!40000 ALTER TABLE `direccion_mozo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -229,7 +230,7 @@ CREATE TABLE `factura` (
 
 LOCK TABLES `factura` WRITE;
 /*!40000 ALTER TABLE `factura` DISABLE KEYS */;
-INSERT INTO `factura` VALUES (1, '2018-12-03 11:25:26', 8, 'A', 1245.0);
+INSERT INTO `factura` VALUES (1, '2018-12-03', 8, 'A', 1245.0);
 /*!40000 ALTER TABLE `factura` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -300,6 +301,7 @@ CREATE TABLE `menu_promocional` (
 
 LOCK TABLES `menu_promocional` WRITE;
 /*!40000 ALTER TABLE `menu_promocional` DISABLE KEYS */;
+INSERT INTO `menu_promocional` VALUES (55,'2018-06-01','2018-06-30',3,1);
 /*!40000 ALTER TABLE `menu_promocional` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,6 +355,7 @@ CREATE TABLE `paso` (
 
 LOCK TABLES `paso` WRITE;
 /*!40000 ALTER TABLE `paso` DISABLE KEYS */;
+INSERT INTO `paso` VALUES ('Menu con amigos', 'para 4 personas', 'SUPREMA PIRI-PIRI', '');
 /*!40000 ALTER TABLE `paso` ENABLE KEYS */;
 UNLOCK TABLES;
 
